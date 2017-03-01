@@ -1,0 +1,7 @@
+.settings/*
+!.gitignore
+.classpath
+.project
+target/*
+
+
