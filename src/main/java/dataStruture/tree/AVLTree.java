@@ -1,23 +1,30 @@
 package dataStruture.tree;
 
+/**
+ * @author wangjianyang
+ *
+ * @param <T>
+ */
+/**
+ * @author wangjianyang
+ * 
+ * @param <T>
+ */
 public class AVLTree<T extends Comparable<T>> {
+	private TreeNode<T> root; // 根结点
 
-	private TreeNode<T> root;
-
-	// 定义Node节点
-	@SuppressWarnings("hiding")
+	// AVL树的节点(内部类)
 	class TreeNode<T extends Comparable<T>> {
-		public T key;
-		public TreeNode<T> left;
-		public TreeNode<T> right;
-		public int height;
+		T key; // 关键字(键值)
+		int height; // 高度
+		TreeNode<T> left; // 左孩子
+		TreeNode<T> right; // 右孩子
 
-		public TreeNode(T key, TreeNode<T> left, TreeNode<T> right, int height) {
-			super();
+		public TreeNode(T key, TreeNode<T> left, TreeNode<T> right) {
 			this.key = key;
 			this.left = left;
 			this.right = right;
-			this.height = height;
+			this.height = 1;
 		}
 
 		@Override
@@ -26,133 +33,127 @@ public class AVLTree<T extends Comparable<T>> {
 		}
 	}
 
-	private TreeNode<T> remove(TreeNode<T> root, T key) {
-		// 空，移除返回
-		if (root == null)
-			return null;
-		int compareResult = key.compareTo(root.key);
-		if (compareResult < 0)
-			root.left = remove(root.left, key);
-		else if (compareResult > 0)
-			root.right = remove(root.right, key);
-		else if (root.left != null && root.right != null) {
-			root.key = findMin(root.right).key;
-			root.right = remove(root.right, root.key);
-		} else
-			root = (root.left != null) ? root.left : root.right;
-		return blance(root);
-	}
-
+	/**
+	 * 递归插入
+	 * 
+	 * @param root
+	 * @param key
+	 * @return
+	 */
 	private TreeNode<T> insert(TreeNode<T> root, T key) {
-
 		if (root == null)
-			root = new TreeNode<T>(key, null, null, 0);
+			// 插入，返回
+			return new TreeNode<T>(key, null, null);
 		int compareResult = key.compareTo(root.key);
 		if (compareResult < 0)
 			root.left = insert(root.left, key);
-		else if (compareResult > 0)
+		if (compareResult > 0)
 			root.right = insert(root.right, key);
-		root.height = Math.max(height(root.left), height(root.right)) + 1;
-		return blance(root);
+		// 插入后平衡节点
+		return balance(root);
 	}
 
-	private static final int ALLOW_HEIGHT = 1;
+	private TreeNode<T> remove(TreeNode<T> root, T key) {
+		if (root == null)
+			return root;
+		int compareResult = key.compareTo(root.key);
+		if (compareResult < 0)
+			// 移除左节点
+			root.left = remove(root.left, key);
+		else if (compareResult > 0)
+			// 移除右节点
+			root.right = remove(root.right, key);
+		else if (root.left != null && root.right != null) {// 左右节点都不为空
+			// 找到右子树下最小节点的值
+			root.key = findMin(root.right).key;
+			// 移除右子树下最小节点
+			root.right = remove(root.right, root.key);
+		} else
+			// 只有一个节点
+			root = (root.left != null) ? root.left : root.right;
+		return balance(root);
+	}
 
-	private TreeNode<T> blance(TreeNode<T> node) {
-		if (node == null)
-			return null;
-		if (height(node.left) - height(node.right) > ALLOW_HEIGHT) {
-			if (height(node.left.left) >= height(node.left.right))
-				node = rotateWithLLChild(node);
-			else if (height(node.left.left) < height(node.left.right))
-				node = rotateWithLRChild(node);
-		} else if (height(node.right) - height(node.left) > ALLOW_HEIGHT) {
-			if (height(node.right.left) >= height(node.right.right))
-				node = rotateWithRLChild(node);
-			else if (height(node.right.left) < height(node.right.right))
-				node = rotateWithRRChild(node);
+	public T findMin() {
+		return findMin(root).key;
+	}
+
+	private TreeNode<T> findMin(TreeNode<T> t) {
+		if (t == null)
+			return t;
+		while (t.left != null)
+			t = t.left;
+		return t;
+	}
+
+	private static final int ALLOWED_MIXBALANCE = 1;
+
+	/**
+	 * 平衡节点
+	 * 
+	 * @param t
+	 * @return
+	 */
+	private TreeNode<T> balance(TreeNode<T> t) {
+		if (t == null)
+			return t;
+		if (height(t.left) - height(t.right) > ALLOWED_MIXBALANCE) {// 不平衡
+			if (height(t.left.left) >= height(t.left.right))//LL
+				t = rotateWithLLChild(t);
+			else//LR
+				t = rotateWithLRChild(t);
+		} else if (height(t.right) - height(t.left) > ALLOWED_MIXBALANCE) {
+			if (height(t.right.right) >= height(t.right.left))//RR
+				t = rotateWithRRChild(t);
+			else//RL
+				t = rotateWithRLChild(t);
 		}
-		node.height = Math.max(height(node.left), height(node.right)) + 1;
-		return node;
+		t.height = Math.max(height(t.left), height(t.right)) + 1;
+		return t;
 	}
 
-	private TreeNode<T> rotateWithLRChild(TreeNode<T> k1) {
-		k1.left = rotateWithRRChild(k1.left);
-		return rotateWithLLChild(k1);
-	}
-
-	private TreeNode<T> rotateWithRLChild(TreeNode<T> k1) {
-		k1.right = rotateWithLLChild(k1.right);
-		return rotateWithRRChild(k1);
-	}
-
-	private TreeNode<T> rotateWithLLChild(TreeNode<T> k1) {
-		TreeNode<T> k2 = k1.left;
-		k1.left = k2.right;
-		k2.right = k1;
-		k1.height = Math.max(height(k1.left), height(k2.right)) + 1;
-		k2.height = Math.max(height(k2.left), k1.height) + 1;
-		return k2;
-	}
-
-	private TreeNode<T> rotateWithRRChild(TreeNode<T> k1) {
-
-		TreeNode<T> k2 = k1.right;
-		k1.right = k2.left;
-		k2.left = k1;
-		k1.height = Math.max(height(k1.left), height(k1.right)) + 1;
-		k2.height = Math.max(k1.height, height(k1.right)) + 1;
-
-		return k2;
+	private int height(TreeNode<T> tree) {
+		if (tree != null)
+			return tree.height;
+		return 0;
 	}
 
 	public int height() {
 		return height(root);
 	}
 
-	private int height(TreeNode<T> node) {
-		if (node != null)
-			return node.height;
-		return 0;
+	public TreeNode<T> rotateWithLLChild(TreeNode<T> k2) {
+		TreeNode<T> k1 = k2.left;
+		k2.left = k1.right;
+		k1.right = k2;
+		k2.height = Math.max(height(k2.left), height(k2.right)) + 1;
+		k1.height = Math.max(height(k1.left), k2.height) + 1;
+
+		return k1;
 	}
 
-	private boolean contains(TreeNode<T> root, T key) {
-		if (root == null)
-			return false;
-		int compareResult = key.compareTo(root.key);
-
-		if (compareResult < 0)
-			// 如果小于，比较左节点
-			return contains(root.left, key);
-		else if (compareResult > 0)
-			return contains(root.right, key);
-		else
-			// 找到，返回
-			return true;
+	public TreeNode<T> rotateWithRRChild(TreeNode<T> k2) {
+		TreeNode<T> k1 = k2.right;
+		k2.right = k1.left;
+		k1.left = k2;
+		k2.height = Math.max(height(k2.left), height(k2.left)) + 1;
+		k1.height = Math.max(k2.height, height(k1.right)) + 1;
+		return k1;
 	}
 
-	private TreeNode<T> findMin(TreeNode<T> root) {
-		if (root == null)
-			return null;
-		while (root.left != null) {
-			root = root.left;
-		}
-		return root;
+	public TreeNode<T> rotateWithLRChild(TreeNode<T> k3) {
+		k3.left = rotateWithRRChild(k3.left);
+		return rotateWithLLChild(k3);
 	}
 
-	private TreeNode<T> findMax(TreeNode<T> root2) {
-		if (root == null)
-			return null;
-		while (root.right != null) {
-			root = root.right;
-		}
-		return root;
+	public TreeNode<T> rotateWithRLChild(TreeNode<T> k3) {
+		k3.right = rotateWithLLChild(k3.right);
+		return rotateWithRRChild(k3);
 	}
 
 	private void preOrder(TreeNode<T> root) {
-
 		if (root != null) {
-			System.out.print(root);
+			System.out.print(root.toString());
 			preOrder(root.left);
 			preOrder(root.right);
 		}
@@ -161,7 +162,7 @@ public class AVLTree<T extends Comparable<T>> {
 	private void inOrder(TreeNode<T> root) {
 		if (root != null) {
 			inOrder(root.left);
-			System.out.print(root);
+			System.out.print(root.toString());
 			inOrder(root.right);
 		}
 	}
@@ -170,8 +171,17 @@ public class AVLTree<T extends Comparable<T>> {
 		if (root != null) {
 			postOrder(root.left);
 			postOrder(root.right);
-			System.out.print(root);
+			System.out.print(root.toString());
 		}
+
+	}
+
+	public void remove(T key) {
+		remove(root, key);
+	}
+
+	public void insert(T key) {
+		root = insert(root, key);
 	}
 
 	public void preOrder() {
@@ -186,29 +196,4 @@ public class AVLTree<T extends Comparable<T>> {
 		postOrder(root);
 	}
 
-	public void insert(T key) {
-		root = insert(root, key);
-	}
-
-	public void remove(T key) {
-		root = remove(root, key);
-	}
-
-	public T findMin() {
-		TreeNode<T> minNode = findMin(root);
-		if (minNode != null)
-			return minNode.key;
-		return null;
-	}
-
-	public T findMax() {
-		TreeNode<T> maxNode = findMax(root);
-		if (maxNode != null)
-			return maxNode.key;
-		return null;
-	}
-
-	public boolean contains(T key) {
-		return contains(root, key);
-	}
 }
