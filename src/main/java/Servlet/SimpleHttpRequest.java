@@ -1,8 +1,6 @@
 package Servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,31 +17,44 @@ public class SimpleHttpRequest extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// Parameter
-		String name = request.getParameter("name");
-		System.out.println("name:" + name);
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		for (String key : parameterMap.keySet()) {
-			String[] values = parameterMap.get(key);
-			for (String value : values) {
-				System.out.println("key:" + key + " value:" + value);
-			}
-		}
-		// RequestDispatcher
-		RequestDispatcher requestDispatcher = request
-				.getRequestDispatcher("/another");
-		requestDispatcher.forward(request, response);
+		// String name = request.getParameter("name");
+		// System.out.println("name:" + name);
+		// Map<String, String[]> parameterMap = request.getParameterMap();
+		// for (String key : parameterMap.keySet()) {
+		// String[] values = parameterMap.get(key);
+		// for (String value : values) {
+		// System.out.println("key:" + key + " value:" + value);
+		// }
+		// }
 
+		// RequestDispatcher include forward
+		// RequestDispatcher requestDispatcher = request
+		// .getRequestDispatcher("/another");
+		// requestDispatcher.include(request, response);
+
+		// Session redis，mysql 集群
 		// HttpSession session = request.getSession();
-		String contentLength = request.getHeader("Content-Length");
+		// session.setAttribute("name", "session");
+		// System.out.println(session.getId());
 
-		InputStream requestBodyInput = request.getInputStream();
+		// requeset header
+		// String accept = request.getHeader("Accept");
+		// System.out.println(accept);
 
-		// ServletContext context = req.getSession().getServletContext();
+		// InputStream requestBodyInput = request.getInputStream();
 
+		// ServletContext 这里得到的context作用于本次回话
+		// ServletContext context = request.getSession().getServletContext();
+		// String serverInfo = context.getServerInfo();
+		// System.out.println(serverInfo);
+
+		// Cookie
 		Cookie[] cookies = request.getCookies();
+		for (Cookie c : cookies) {
+			System.out.println(c.getMaxAge());
+		}
 
-		response.getWriter().print("<h1>httpServlet:doGet</h1>");
+		response.getWriter().print("<h1>httpServlet:request</h1>");
 
 	}
-
 }
