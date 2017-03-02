@@ -1,5 +1,7 @@
 package dataStruture.tree;
 
+import java.util.Stack;
+
 public class BinarySortTree<T extends Comparable<T>> {
 
 	private TreeNode<T> root;
@@ -93,10 +95,27 @@ public class BinarySortTree<T extends Comparable<T>> {
 
 	private void preOrder(TreeNode<T> root) {
 
-		if (root != null) {
-			System.out.print(root);
-			preOrder(root.left);
-			preOrder(root.right);
+		// if (root != null) {
+		// System.out.print(root);
+		// preOrder(root.left);
+		// preOrder(root.right);
+		// }
+
+		Stack<TreeNode<T>> s = new Stack<>();
+
+		while (!s.isEmpty() || root != null) {
+			//左子树以此入栈
+			while (root != null) {
+				//入栈前访问
+				System.out.print(root);
+				s.push(root);
+				root = root.left;
+			}
+			//退栈，右子树入站
+			if (!s.isEmpty()) {
+				root = s.pop();
+				root = root.right;
+			}
 		}
 	}
 
@@ -105,10 +124,22 @@ public class BinarySortTree<T extends Comparable<T>> {
 	}
 
 	private void inOrder(TreeNode<T> root) {
-		if (root != null) {
-			inOrder(root.left);
-			System.out.print(root);
-			inOrder(root.right);
+		// if (root != null) {
+		// inOrder(root.left);
+		// System.out.print(root);
+		// inOrder(root.right);
+		// }
+		Stack<TreeNode<T>> s = new Stack<>();
+		while (!s.isEmpty() || root != null) {
+			while (root != null) {
+				s.push(root);
+				root = root.left;
+			}
+			if (!s.isEmpty()) {
+				root = s.pop();
+				System.out.print(root);
+				root = root.right;
+			}
 		}
 	}
 
@@ -117,10 +148,34 @@ public class BinarySortTree<T extends Comparable<T>> {
 	}
 
 	private void postOrder(TreeNode<T> root) {
-		if (root != null) {
-			postOrder(root.left);
-			postOrder(root.right);
-			System.out.print(root);
+		// if (root != null) {
+		// postOrder(root.left);
+		// postOrder(root.right);
+		// System.out.print(root);
+		// }
+		// 后序遍历的难点在于：需要判断上次访问的节点是位于左子树，还是右子树。
+		// 若是位于左子树，则需跳过根节点，先进入右子树，再回头访问根节点；
+		// 若是位于右子树，则直接访问根节点。
+		Stack<TreeNode<T>> s = new Stack<>();
+		TreeNode<T> curNode = root, lastVisitNode = null;
+		while (curNode != null) {
+			s.push(curNode);
+			curNode = curNode.left;
+		}
+
+		while (!s.isEmpty()) {
+			curNode = s.pop();
+			if (curNode.right != null && curNode.right != lastVisitNode) {
+				s.push(curNode);
+				curNode = curNode.right;
+				while (curNode != null) {
+					s.push(curNode);
+					curNode = curNode.left;
+				}
+			} else {
+				System.out.print(curNode);
+				lastVisitNode = curNode;
+			}
 		}
 	}
 
