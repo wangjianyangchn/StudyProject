@@ -1,18 +1,9 @@
 package dataStruture.tree;
 
-/**
- * @author wangjianyang
- *
- * @param <T>
- */
-/**
- * @author wangjianyang
- * 
- * @param <T>
- */
 public class AVLTree<T extends Comparable<T>> {
 	private TreeNode<T> root; // 根结点
 
+	@SuppressWarnings("hiding")
 	// AVL树的节点(内部类)
 	class TreeNode<T extends Comparable<T>> {
 		T key; // 关键字(键值)
@@ -98,14 +89,16 @@ public class AVLTree<T extends Comparable<T>> {
 		if (t == null)
 			return t;
 		if (height(t.left) - height(t.right) > ALLOWED_MIXBALANCE) {// 不平衡
-			if (height(t.left.left) >= height(t.left.right))//LL
+			if (height(t.left.left) >= height(t.left.right))// LL
 				t = rotateWithLLChild(t);
-			else//LR
+			else
+				// LR
 				t = rotateWithLRChild(t);
 		} else if (height(t.right) - height(t.left) > ALLOWED_MIXBALANCE) {
-			if (height(t.right.right) >= height(t.right.left))//RR
+			if (height(t.right.right) >= height(t.right.left))// RR
 				t = rotateWithRRChild(t);
-			else//RL
+			else
+				// RL
 				t = rotateWithRLChild(t);
 		}
 		t.height = Math.max(height(t.left), height(t.right)) + 1;

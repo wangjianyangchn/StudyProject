@@ -1,8 +1,7 @@
-package Servlet;
+package servlet;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +42,7 @@ public class SimpleHttpRequest extends HttpServlet {
 
 		// InputStream requestBodyInput = request.getInputStream();
 
-		// ServletContext 这里得到的context作用于本次回话
+		// ServletContext 存储在的ServletContext属性可用于应用程序中的所有servlet
 		// ServletContext context = request.getSession().getServletContext();
 		// String serverInfo = context.getServerInfo();
 		// System.out.println(serverInfo);

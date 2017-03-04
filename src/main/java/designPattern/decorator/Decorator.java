@@ -12,4 +12,12 @@ public class Decorator implements Component {
 		System.out.println("Decorator.operation()");
 	}
 
+	public Component getComponent() {
+		return component;
+	}
+
+	public void setComponent(Component component) {
+		this.component = component;
+	}
+
 }

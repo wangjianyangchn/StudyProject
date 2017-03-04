@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+	<servlet>
+		<servlet-name>controlServlet</servlet-name>
+		<servlet-class>servlet.SimpleWebXml</servlet-class>
+		<!-- 不访问也会初始化，但是还在在filter后面加载 -->
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>name</param-name>
+			<param-value>value</param-value>
+			<description>相当于在servlet init()方法中初始化</description>
+		</init-param>
+	</servlet>
+	<!-- 1.application范围内的参数，存放在servletcontext中 2.servlet范围内的参数，只能在servlet的init()方法中取得 -->
+	<context-param>
+		<param-name>key</param-name>
+		<param-value>value</param-value>
+	</context-param>
+
+	<servlet-mapping>
+		<servlet-name>controlServlet</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>filter</filter-name>
+		<filter-class>servlet.SimpleServletFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+</web-app>

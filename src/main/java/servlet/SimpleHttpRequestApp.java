@@ -1,7 +1,6 @@
-package Servlet;
+package servlet;
 
 import java.io.IOException;
-import java.util.EventListener;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.SessionManager;
-import org.eclipse.jetty.server.session.HashSessionIdManager;
 import org.eclipse.jetty.server.session.HashSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -44,6 +42,8 @@ public class SimpleHttpRequestApp {
 		context.addServlet(new ServletHolder(new HttpServlet(
 
 		) {
+
+			private static final long serialVersionUID = -8394328374737522353L;
 
 			@Override
 			protected void doGet(HttpServletRequest req,
