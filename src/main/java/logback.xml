@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- http://blog.csdn.net/haidage/article/details/6794509 -->
+<!-- http://www.cnblogs.com/warking/p/5710303.html -->
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd">
-	<property name="logDir" value="E:" />
 
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<!-- <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> 
-			<pattern>%date{yyyyMMdd HH:mm:ss.SSS} [%thread] %-5level %logger{0}:%line 
-			- %msg%n</pattern> </encoder> -->
+	<property name="logDir" value="/data" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
 		<encoder>
-			<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-				by default -->
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<pattern>%date{yyyy/MM/dd HH:mm:ss.SSS} [%thread] %-5level %logger{0}:%line 
+			- %msg%n</pattern>
 		</encoder>
 	</appender>
-
-
+	
 	<appender name="appLog"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${logDir}/appLog.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${logDir}/appLog.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>${logDir}/appLog.log.%d{yyyy-MM-dd}
+			</fileNamePattern>
 		</rollingPolicy>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<pattern>%date{yyyyMMdd HH:mm:ss.SSS} [%thread] %-5level %X{invokeNo} %logger{0}:%line - %msg%n</pattern>
+			<pattern>%date{yyyyMMdd HH:mm:ss.SSS} [%thread] %-5level %X{invokeNo}
+				%logger{0}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
 			<level>INFO</level>
@@ -31,10 +33,12 @@
 
 	<logger name="log.logback" level="info" additivity="false">
 		<appender-ref ref="appLog" />
+		<appender-ref ref="STDOUT"/>
 	</logger>
 
-	<root level="info">
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="appLog" />
-		<appender-ref ref="console" />
 	</root>
+	
 </configuration>
