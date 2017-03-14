@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2017-03-13T23:53:08</date>
+  <millis>1489420388069</millis>
+  <sequence>0</sequence>
+  <logger>log.jdk.LogHandler</logger>
+  <level>INFO</level>
+  <class>log.jdk.LogHandler</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>hello,file handler</message>
+</record>
+</log>
