@@ -5,6 +5,7 @@
 	<artifactId>StudyProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+
 	<dependencies>
 		<!-- jetty -->
 		<dependency>
@@ -60,4 +61,20 @@
 
 
 	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- 制定jdk版本和项目编码 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

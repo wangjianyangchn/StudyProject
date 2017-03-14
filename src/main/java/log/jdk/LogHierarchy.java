@@ -1,5 +1,9 @@
 package log.jdk;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Filter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class LogHierarchy {
@@ -16,7 +20,28 @@ public class LogHierarchy {
 		System.out.println(logger2.getParent().getName());
 	}
 
+	// filter,handler 会向上传递
+	public static void hierarchy() {
+		Logger logger = Logger.getLogger("");
+		Logger logger1 = Logger.getLogger("1");
+		Logger logger1_2 = Logger.getLogger("1.2");
+
+		logger1.addHandler(new ConsoleHandler());
+		logger1.setFilter(new Filter() {
+			@Override
+			public boolean isLoggable(LogRecord record) {
+				return false;
+			}
+		});
+		logger1.setLevel(Level.WARNING);
+		logger1_2.addHandler(new ConsoleHandler());
+
+		logger.info("msg:");
+		logger1.info("msg: 1");
+		logger1_2.info("msg: 1.2");
+	}
+
 	public static void main(String[] args) {
-		getParent();
+		hierarchy();
 	}
 }
