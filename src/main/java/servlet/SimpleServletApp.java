@@ -12,5 +12,7 @@ public class SimpleServletApp {
 		server.setHandler(context);
 		server.start();
 
+		Thread.sleep(10000);
+		server.stop();
 	}
 }

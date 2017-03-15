@@ -18,10 +18,16 @@ public class SimpleWebXml extends HttpServlet {
 	}
 
 	@Override
+	public void destroy() {
+		System.out.println("SimpleWebXml.destroy()");
+	}
+
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		ServletContext globalContext = req.getServletContext();
 
+		System.out.println("SimpleWebXml.doGet()");
 		resp.getWriter().print(
 				"webapp:" + globalContext.getInitParameter("key")
 						+ this.getInitParameter("name"));

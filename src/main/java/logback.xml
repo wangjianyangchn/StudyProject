@@ -36,7 +36,7 @@
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
-	<root level="DEBUG">
+	<root level="error">
 		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="appLog" />
 	</root>

@@ -10,6 +10,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+/**
+ *   sevlet初始化顺序
+ *     init()
+ *     service()
+ *     destory();
+ */
 public class SimpleServlet extends GenericServlet {
 
 	private static final long serialVersionUID = 1981615274010516505L;

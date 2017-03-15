@@ -25,14 +25,31 @@ public class SimpleServletFilterApp {
 			private static final long serialVersionUID = -4351399637962559766L;
 
 			@Override
+			public void init() throws ServletException {
+				System.out
+						.println("SimpleServletFilterApp.main(...).new HttpServlet() {...}.init()");
+			}
+
+			@Override
+			public void destroy() {
+				System.out
+						.println("SimpleServletFilterApp.main(...).new HttpServlet() {...}.destroy()");
+			}
+
+			@Override
 			protected void doGet(HttpServletRequest req,
 					HttpServletResponse resp) throws ServletException,
 					IOException {
+				System.out
+						.println("SimpleServletFilterApp.main(...).new HttpServlet() {...}.doGet()");
 				resp.getWriter().print("<h1>hello</h1>");
 			}
 		}), "/simple");
 
 		server.setHandler(context);
 		server.start();
+
+		Thread.sleep(10000);
+		server.stop();
 	}
 }

@@ -9,6 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+/**
+ * filter init() sevlet init() filter doFilter() sevlet service() sevlet
+ * destroy() filter destroy()
+ */
 public class SimpleServletFilter implements Filter {
 
 	@Override
