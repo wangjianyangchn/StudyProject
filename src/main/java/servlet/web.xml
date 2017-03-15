@@ -37,6 +37,11 @@
 		<filter-name>filter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<session-config>
+		<!-- session有效时常15分钟 -->
+		<session-timeout>15</session-timeout>
+	</session-config>
 
 	<listener>
 		<listener-class>servlet.SimpleHttpContextListener</listener-class>
