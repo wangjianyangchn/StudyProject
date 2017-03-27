@@ -30,6 +30,8 @@ alter table samp_table change column id table_id int auto_increment,
 change column name name varchar(40),
 add column gender enum('male','female');
 
+alter table samp_table drop gender;
+
 rename table samp_table to my_table;
 
 mysql 数据类型
@@ -39,31 +41,56 @@ insert into my_table values(1,'001','male');
 insert into my_table (name,gender) values('002','female'),('003','female');
 14.删除记录
 delete from my_table where name = '001';
+truncate my_table;
+
+delete 逐条删除
+truncate 删除表后重建表
+
 15.修改记录
 update my_table set gender='male' where table_id>6;
 16.查询记录
-select table_id,name from my_table order by name;//排序
+select table_id,name from my_table order by name;
 select * from my_table limit 0,10;
+select * from my_table where id > 6;
+select distinct english from student;
+select name,math from student where math in(89,90,91);
+select name,english+chinese+math as sum from student;
+select sum(math) from student;
+
+select * from department,employee;//笛卡尔集
+select * from department,employee where employee.departmentid=department.id;
+
+函数
+select sum(math) from student;
+select avg(chinese) from student;
+select max(chinese) from student;//min
+select count(*) from student;
+
+约束
+create table users
+(
+id int primary key auto_increment=10, //主键
+username varchar(20) unique,//唯一
+password varchar(20) not null,//非空
+pid int,
+constraint pid_FK foreign key(pid) references partment(id)//外键
+)auto_increment=10;//自增
+
+alter table users add primary key(id);
+alter table users drop primary key;
+alter table users auto_increment=100;
 
 
-添加索引
-添加主键
-...
-
-
-
-查询记录
-
-条件查询
 
 分组查询
 
 关联查询 左右内外
 
-主外键
 
 索引（唯一索引，组合索引）
 
 引擎
 
 用户权限
+
+SQL 注入

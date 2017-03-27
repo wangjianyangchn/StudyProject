@@ -12,6 +12,10 @@ public class SimpleWebXml extends HttpServlet {
 
 	private static final long serialVersionUID = 7307451084329916210L;
 
+	public SimpleWebXml() {
+		System.out.println("SimpleWebXml.SimpleWebXml()");
+	}
+
 	@Override
 	public void init() throws ServletException {
 		System.out.println("SimpleWebXml.init()");
