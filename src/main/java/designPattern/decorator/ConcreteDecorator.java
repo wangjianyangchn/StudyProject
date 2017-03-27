@@ -8,7 +8,6 @@ public class ConcreteDecorator extends Decorator implements Component {
 
 	@Override
 	public void operation() {
-		// TODO Auto-generated method stub
 		super.operation();
 		System.out.println("ConcreteDecorator.operation()");
 	}
